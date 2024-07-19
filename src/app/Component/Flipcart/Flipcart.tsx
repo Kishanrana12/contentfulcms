@@ -12,7 +12,7 @@ interface Flipcart2Entry {
         title: string;
         logo?: {
             fields: LogoFields;
-        };
+        } | null; // Ensure that logo can be null
     };
 }
 
@@ -21,7 +21,7 @@ const fetchHeader = async (): Promise<Flipcart2Entry[]> => {
         const data = await client.getEntries({
             'content_type': 'flipcart2'
         });
-        return data.items as unknown as Flipcart2Entry[];
+        return data.items as Flipcart2Entry[];
     } catch (error) {
         console.error('Error fetching data:', error);
         return [];
@@ -40,19 +40,23 @@ export default async function Flipcart2() {
 
     return (
         <div>
-            {datatwo.map((datas, index) => (
-                <div key={index}>
-                    <div>Title: {datas.fields.title}</div>
-                    {datas.fields.logo?.fields.file.url && (
-                        <Image 
-                            src={prependProtocol(datas.fields.logo.fields.file.url)} 
-                            alt={datas.fields.title} 
-                            width={500} 
-                            height={500} 
-                        />
-                    )}
-                </div>
-            ))}
+            {datatwo.map((datas, index) => {
+                const logoUrl = datas.fields.logo?.fields.file.url;
+                
+                return (
+                    <div key={index}>
+                        <div>Title: {datas.fields.title}</div>
+                        {logoUrl && (
+                            <Image 
+                                src={prependProtocol(logoUrl)} 
+                                alt={datas.fields.title} 
+                                width={500} 
+                                height={500} 
+                            />
+                        )}
+                    </div>
+                );
+            })}
         </div>
     );
 }
