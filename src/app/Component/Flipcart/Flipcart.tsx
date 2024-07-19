@@ -21,7 +21,7 @@ const fetchHeader = async (): Promise<Flipcart2Entry[]> => {
         const data = await client.getEntries({
             'content_type': 'flipcart2'
         });
-        return data.items as Flipcart2Entry[];
+        return data.items as unknown as Flipcart2Entry[];
     } catch (error) {
         console.error('Error fetching data:', error);
         return [];
