@@ -1,14 +1,15 @@
 import client from "@/config/contentful";
+
 const fetchHeader = async () => {
     const data = await client.getEntries({
         'content_type' : 'header'
     })
-     console.log("datacferfrefewferwf" , data.items);
+
     return data.items;
 }
 export default async function Header( ) {
     const datatwo = await fetchHeader()
-    console.log("abcd" , datatwo);
+   
     return (
         <div>
             {datatwo.map((datas, index) => (
